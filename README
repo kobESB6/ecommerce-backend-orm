@@ -1,170 +1,199 @@
-Readme · MD
-# E-commerce Back End
- 
-## Description
- 
+E-commerce Back End
+
+Description
+
 This project is the back end for an e-commerce site, built with a working Express.js API configured to use Sequelize to interact with a PostgreSQL database. It demonstrates the fundamental architecture of online retail platforms by modeling categories, products, and tags — and the relationships between them — through an Object-Relational Mapping (ORM) layer.
- 
+
 The application exposes a full set of RESTful API routes that allow a user to create, read, update, and delete categories, products, and tags. Each model is connected through Sequelize associations, including a many-to-many relationship between products and tags managed through a join table.
- 
-## Table of Contents
- 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Database Models](#database-models)
-- [API Routes](#api-routes)
-- [How to Test](#how-to-test)
-- [Technologies Used](#technologies-used)
-- [License](#license)
-- [Questions](#questions)
-## Installation
- 
-1. Clone the repository to your local machine.
-2. Install the required dependencies:
-```bash
-   npm install
-```
- 
-3. Create a `.env` file in the root directory with your PostgreSQL credentials:
-```
+
+Table of Contents
+
+
+Installation
+Usage
+Database Models
+API Routes
+How to Test
+Technologies Used
+License
+Questions
+
+
+Installation
+
+
+Clone the repository to your local machine.
+Install the required dependencies:
+
+
+bash   npm install
+
+
+Create a .env file in the root directory with your PostgreSQL credentials:
+
+
    DB_NAME=ecommerce_db
    DB_USER=your_postgres_username
    DB_PASSWORD=your_postgres_password
-```
- 
-4. Create the database using the PostgreSQL shell:
-```bash
-   psql -U your_postgres_username -d postgres
+
+
+Create the database using the PostgreSQL shell:
+
+
+bash   psql -U your_postgres_username -d postgres
    \i db/schema.sql
    \q
-```
- 
-5. Seed the database with test data:
-```bash
-   npm run seed
-```
- 
-## Usage
- 
+
+
+Seed the database with test data:
+
+
+bash   npm run seed
+
+Usage
+
 Start the server with:
- 
-```bash
-npm start
-```
- 
-The server will sync the Sequelize models to the PostgreSQL database and begin listening on port 3001. Once running, the API routes can be tested using an API client such as Insomnia Core or Postman at `http://localhost:3001`.
- 
-## Database Models
- 
+
+bashnpm start
+
+The server will sync the Sequelize models to the PostgreSQL database and begin listening on port 3001. Once running, the API routes can be tested using an API client such as Insomnia Core or Postman at http://localhost:3001.
+
+Database Models
+
 The database contains four models:
- 
-**Category**
-- `id`: Integer, primary key, auto-increment, not null
-- `category_name`: String, not null
-**Product**
-- `id`: Integer, primary key, auto-increment, not null
-- `product_name`: String, not null
-- `price`: Decimal, not null, validated as a decimal
-- `stock`: Integer, not null, default value of 10, validated as numeric
-- `category_id`: Integer, references the Category model's id
-**Tag**
-- `id`: Integer, primary key, auto-increment, not null
-- `tag_name`: String
-**ProductTag**
-- `id`: Integer, primary key, auto-increment, not null
-- `product_id`: Integer, references the Product model's id
-- `tag_id`: Integer, references the Tag model's id
-### Associations
- 
-- A Product belongs to a single Category, and a Category has many Products.
-- A Product belongs to many Tags, and a Tag belongs to many Products, connected through the ProductTag join table.
-## API Routes
- 
-All routes are prefixed with `/api`.
- 
-**Categories** (`/api/categories`)
-- `GET /` — returns all categories with their associated products
-- `GET /:id` — returns a single category with its associated products
-- `POST /` — creates a new category
-- `PUT /:id` — updates a category by id
-- `DELETE /:id` — deletes a category by id
-**Products** (`/api/products`)
-- `GET /` — returns all products with associated category and tag data
-- `GET /:id` — returns a single product with associated category and tag data
-- `POST /` — creates a new product
-- `PUT /:id` — updates a product by id
-- `DELETE /:id` — deletes a product by id
-**Tags** (`/api/tags`)
-- `GET /` — returns all tags with their associated products
-- `GET /:id` — returns a single tag with its associated products
-- `POST /` — creates a new tag
-- `PUT /:id` — updates a tag by id
-- `DELETE /:id` — deletes a tag by id
-## How to Test
- 
+
+Category
+
+
+id: Integer, primary key, auto-increment, not null
+category_name: String, not null
+
+
+Product
+
+
+id: Integer, primary key, auto-increment, not null
+product_name: String, not null
+price: Decimal, not null, validated as a decimal
+stock: Integer, not null, default value of 10, validated as numeric
+category_id: Integer, references the Category model's id
+
+
+Tag
+
+
+id: Integer, primary key, auto-increment, not null
+tag_name: String
+
+
+ProductTag
+
+
+id: Integer, primary key, auto-increment, not null
+product_id: Integer, references the Product model's id
+tag_id: Integer, references the Tag model's id
+
+
+Associations
+
+
+A Product belongs to a single Category, and a Category has many Products.
+A Product belongs to many Tags, and a Tag belongs to many Products, connected through the ProductTag join table.
+
+
+API Routes
+
+All routes are prefixed with /api.
+
+Categories (/api/categories)
+
+
+GET / — returns all categories with their associated products
+GET /:id — returns a single category with its associated products
+POST / — creates a new category
+PUT /:id — updates a category by id
+DELETE /:id — deletes a category by id
+
+
+Products (/api/products)
+
+
+GET / — returns all products with associated category and tag data
+GET /:id — returns a single product with associated category and tag data
+POST / — creates a new product
+PUT /:id — updates a product by id
+DELETE /:id — deletes a product by id
+
+
+Tags (/api/tags)
+
+
+GET / — returns all tags with their associated products
+GET /:id — returns a single tag with its associated products
+POST / — creates a new tag
+PUT /:id — updates a tag by id
+DELETE /:id — deletes a tag by id
+
+
+How to Test
+
 After seeding the database and starting the server, the routes can be tested with an API client. Example requests:
- 
-**Get all products** (returns products with nested category and tags):
- 
-```
+
+Get all products (returns products with nested category and tags):
+
 GET http://localhost:3001/api/products
-```
- 
-**Create a category:**
- 
-```
+
+Create a category:
+
 POST http://localhost:3001/api/categories
 Body (JSON):
 {
   "category_name": "Footwear"
 }
-```
- 
-**Update a tag:**
- 
-```
+
+Update a tag:
+
 PUT http://localhost:3001/api/tags/1
 Body (JSON):
 {
   "tag_name": "rare"
 }
-```
- 
-**Delete a category** (associated products are removed automatically through the cascade rule):
- 
-```
+
+Delete a category (associated products are removed automatically through the cascade rule):
+
 DELETE http://localhost:3001/api/categories/1
-```
- 
-A successful request returns a `200` status code with the relevant data in formatted JSON. Requests for a non-existent id return a `404` status code with a descriptive message.
- 
-## Technologies Used
- 
-- Node.js
-- Express.js
-- PostgreSQL
-- Sequelize
-- pg
-- dotenv
-## License
- 
+
+A successful request returns a 200 status code with the relevant data in formatted JSON. Requests for a non-existent id return a 404 status code with a descriptive message.
+
+Technologies Used
+
+
+Node.js
+Express.js
+PostgreSQL
+Sequelize
+pg
+dotenv
+
+
+License
+
 This project is licensed under the MIT License.
- 
-```
+
 MIT License
- 
+
 Copyright (c) 2026 Kobie
- 
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
- 
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
- 
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -172,8 +201,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
- 
-## Questions
- 
+
+Questions
+
 For any questions about this project, please reach out via GitHub.
